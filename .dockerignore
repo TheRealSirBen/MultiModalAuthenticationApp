@@ -1,0 +1,12 @@
+# ignore ALL .log files
+*.log
+
+# ignore ALL app generated folders
+venv/
+images/
+videos/
+logs/
+temp/
+.idea/
+**/__pycache__/
+.dev_env
