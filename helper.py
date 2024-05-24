@@ -9,6 +9,8 @@ from os import environ
 from random import randint
 from PIL import Image
 from numpy import array as np_array
+from pathlib import Path
+import tomli_w
 
 
 def convert_and_resize(image: Image, filename_key: str, instance_id: str) -> (str, str):
@@ -123,12 +125,22 @@ def frontal_face_detector(image_obj: np_array, classifier_obj: CascadeClassifier
     return image_obj
 
 
-def save_uploaded_file_file(instance_id: str, model_type: str, uploaded_file):
-    file_name = '{}_{}'.format(instance_id, model_type)
-    save_path = join(PDF_FOLDER, '{}.pdf'.format(file_name))
+def env_to_toml(filename: str):
+    # Set the path to your .env file
+    env_file = Path(filename)
 
-    with open(save_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    f.close()
+    # Read the environment variables from the .env file
+    env_vars = {}
+    with env_file.open() as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#'):
+                key, value = line.split('=', 1)
+                env_vars[key] = value
 
-    return save_path, file_name
+    # Write the environment variables to a TOML file
+    toml_file = Path('config.toml')
+    with toml_file.open('wb') as f:
+        tomli_w.dump(env_vars, f)
+
+    print(f"Converted .env file to {toml_file}")

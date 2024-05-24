@@ -10,3 +10,4 @@ temp/
 .idea/
 **/__pycache__/
 .dev_env
+config.toml
