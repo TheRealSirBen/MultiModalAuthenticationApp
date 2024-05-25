@@ -229,7 +229,7 @@ if session_state.get('navigation_id') == 1:
 
         capture_selfie.button('Take Selfie', on_click=capture_button_clicked)
 
-        cap = cv2.VideoCapture(0, cv2.CAP_GSTREAMER)
+        cap = cv2.VideoCapture(0)
         while cap.isOpened():
 
             ret, frame = cap.read()
