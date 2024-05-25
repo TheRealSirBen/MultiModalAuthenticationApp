@@ -11,6 +11,7 @@ from PIL import Image
 from numpy import array as np_array
 from pathlib import Path
 import tomli_w
+from logging import info
 
 
 def convert_and_resize(image: Image, filename_key: str, instance_id: str) -> (str, str):
@@ -143,4 +144,8 @@ def env_to_toml(filename: str):
     with toml_file.open('wb') as f:
         tomli_w.dump(env_vars, f)
 
-    print(f"Converted .env file to {toml_file}")
+    info("Converted .env file to {}".format(toml_file))
+
+
+if __name__ == '__main__':
+    env_to_toml('.dev_env')
