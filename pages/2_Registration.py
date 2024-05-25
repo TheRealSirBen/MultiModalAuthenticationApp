@@ -106,11 +106,9 @@ def application_form_button_clicked():
         info('Application form data saved')
 
         session_state['user_public_id'] = user_public_id
-        session_state['navigation_id'] = 2
+        session_state['navigation_id'] = 1
         session_state['camera_state'] = 1
         session_state['face_image'] = 0
-
-        session_state['finger_index'] = 1
 
         # Alert
         session_state['success_message'] = 'Application form data submitted and saved!'
@@ -180,6 +178,7 @@ def process_uploaded_fingerprint():
 
 def continue_to_fingerprint_button_clicked():
     session_state['navigation_id'] = 2
+    session_state['finger_index'] = 1
 
 
 def submit_image_fingerprints_clicked():
