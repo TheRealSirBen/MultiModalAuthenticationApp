@@ -27,7 +27,8 @@ with col2:
                 - Programme: MSC. Security
 
                 ### Topic
-                A Multimodal ...
+                A mutative multimodal biometric authentication framework to enhance data 
+                security in online banking systems.
             """
     )
 

@@ -68,6 +68,8 @@ def save_user_file(file_dir: str, file_name: str, image_path: str, user_public_i
     cloud_file_name = '{}/{}'.format(file_dir, file_name)
     aws_s3_upload_status, aws_s3_upload_response = upload_file_to_aws_s3(image_path, cloud_file_name)
 
+    path_id, record_id, file_path_check_query = str(), str(), dict()
+
     # When upload was successful
     if aws_s3_upload_status == 201:
         # Save s3 file path data
@@ -80,7 +82,8 @@ def save_user_file(file_dir: str, file_name: str, image_path: str, user_public_i
         }
         file_path_check_query = {'path_id': path_id}
         record_id = insert_record('file_path', file_path_data, check_query=file_path_check_query)
-        return path_id, record_id, file_path_check_query
+
+    return path_id, record_id, file_path_check_query
 
 
 def application_form_button_clicked():
@@ -128,6 +131,9 @@ def capture_button_clicked():
         face_dir, file_name, image_path, user_public_id
     )
 
+    if not saved_path_id:
+        session_state['warning_message'] = 'Image upload failed, please take another selfie'
+
     # When image is saved
     if saved_path_id:
 
@@ -171,9 +177,16 @@ def process_uploaded_fingerprint():
     fingerprint_dir = environ.get('FINGERPRINT_DIR')
 
     # Save file
-    save_user_file(fingerprint_dir, fingerprint_file_name, fingerprint_image_path, user_public_id)
+    path_id, record_id, file_path_check_query = save_user_file(
+        fingerprint_dir, fingerprint_file_name, fingerprint_image_path, user_public_id
+    )
 
-    session_state['finger_index'] += 1
+    if record_id:
+        session_state['success_message'] = 'Image upload successful'
+        session_state['finger_index'] += 1
+
+    if not record_id:
+        session_state['warning_message'] = 'Image upload failed. Please re-upload'
 
 
 def continue_to_fingerprint_button_clicked():
@@ -285,7 +298,7 @@ if session_state.get('navigation_id') == 2:
         if session_state.get('finger_index') >= sufficient_fp_images:
             st.button('Proceed to registration completion', on_click=submit_image_fingerprints_clicked)
 
-        if registration_type == 'Upload Images' and session_state.get('finger_index') < sufficient_fp_images:
+        if registration_type == 'Upload Images' and session_state.get('finger_index') < (sufficient_fp_images + 1):
             stored_image_types = environ.get('IMAGE_TYPES')
             image_types = stored_image_types.split('-')
             finger_index = {

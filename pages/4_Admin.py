@@ -3,7 +3,6 @@ from streamlit import session_state
 from pandas import DataFrame
 from datagrip import download_file_from_aws_s3
 from os import environ
-from logging import info
 from database import get_records
 from helper import format_bounding_box
 from helper import draw_bounding_box_on_image
@@ -86,6 +85,7 @@ st.subheader(
 st.dataframe(registered_users_df, use_container_width=True)
 
 registered_users_email_list = registered_users_df['Email'].tolist()
+registered_users_email_list.insert(0, str())
 selected_user = st.selectbox('Select user', registered_users_email_list)
 
 if selected_user:

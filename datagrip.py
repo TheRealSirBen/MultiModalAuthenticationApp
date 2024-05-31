@@ -1,5 +1,6 @@
 from requests import post
 from requests import get
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from os import environ
 from json import loads
 from logging import info
@@ -35,10 +36,16 @@ def upload_file_to_aws_s3(file_path, file_name):
     }
     files = {"file": open(file_path, "rb")}
     url = '{}/upload'.format(AWS_STORAGE_ENDPOINT)
-    data = post(url, files=files, data=data)
-    status, response = data.status_code, loads(data.text)
 
-    return status, response
+    try:
+        data = post(url, files=files, data=data)
+        status, response = data.status_code, loads(data.text)
+
+        return status, response
+
+    except RequestsConnectionError as e:
+        info(e)
+        return False
 
 
 def download_file_from_aws_s3(file_id: str, file_path: str):

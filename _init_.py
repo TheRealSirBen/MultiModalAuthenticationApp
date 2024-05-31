@@ -10,6 +10,7 @@ from os.path import exists
 from os import environ
 
 from requests import post
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from json import loads
 from sys import stdout
 from dotenv import load_dotenv
@@ -55,12 +56,17 @@ def create_app_bucket():
         "region_name": aws_region_name
     }
     url = '{}/new'.format(aws_storage_endpoint)
-    data = post(url, json=data)
-    status, response = data.status_code, loads(data.text)
-    info(response.get('message'))
 
-    if status == 201:
-        environ['AWS_BUCKET_EXISTS'] = 'ok'
+    try:
+        data = post(url, json=data)
+        status, response = data.status_code, loads(data.text)
+        info(response.get('message'))
+
+        if status == 201:
+            environ['AWS_BUCKET_EXISTS'] = 'ok'
+
+    except RequestsConnectionError as e:
+        info(e)
 
 
 def start_app():
