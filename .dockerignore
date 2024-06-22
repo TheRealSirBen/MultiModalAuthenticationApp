@@ -9,4 +9,6 @@ logs/
 temp/
 .idea/
 **/__pycache__/
-.dev_env
+.env_dev
+.yoloface/
+

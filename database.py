@@ -1,16 +1,10 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.collection import Collection
 from pymongo.server_api import ServerApi
-from pymongo.cursor import Cursor
 
 from uuid import uuid4
 from os import environ
 from logging import info
-
-from _init_ import start_app
-
-#
-start_app()
 
 MONGO_DB_URI = environ.get('MONGO_DB_URI')
 MONGO_DB_PASSWORD = environ.get('MONGO_DB_PASSWORD')
@@ -116,3 +110,11 @@ def get_records(collection_name: str, query_filter: dict, keys: list[str]) -> li
         records.append(record)
 
     return records
+
+
+def delete_records(collection_name: str, query_filter: dict):
+    # Get collection
+    client, collection = get_collection(collection_name)
+    # Delete multiple records
+    result = collection.delete_many(query_filter)
+    info("Deleted {} record(s)".format(result.deleted_count))

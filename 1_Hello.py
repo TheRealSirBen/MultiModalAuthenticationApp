@@ -22,13 +22,13 @@ with col2:
         """
                 ### Student Details
 
-                - Name: L. J. Tafireyi
+                - Name: Linos Judah Tafireyi
                 - Student Number: R053007M
-                - Programme: MSC. Security
+                - Programme: MSC In Cybersecurity
 
                 ### Topic
-                A mutative multimodal biometric authentication framework to enhance data 
-                security in online banking systems.
+                A mutative multimodal biometric authentication model to enhance data 
+                security in online customer banking systems.
             """
     )
 

@@ -1,5 +1,7 @@
 from logging import basicConfig
+from logging import getLogger
 from logging import INFO
+from logging import CRITICAL
 from logging import info
 
 from pymongo.mongo_client import MongoClient
@@ -16,6 +18,7 @@ from sys import stdout
 from dotenv import load_dotenv
 from uuid import uuid4
 
+getLogger('pymongo').setLevel(CRITICAL)
 basicConfig(stream=stdout, level=INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
@@ -71,8 +74,8 @@ def create_app_bucket():
 
 def start_app():
     # When environment is dev
-    if exists(".dev_env"):
-        load_dotenv('.dev_env')
+    if exists(".env_dev"):
+        load_dotenv('.env_dev')
         info('Development environment running')
 
     # When environment is prod
@@ -83,10 +86,14 @@ def start_app():
     # Create App dirs
     images_folder = environ.get('IMAGE_FOLDER')
     videos_folder = environ.get('VIDEO_FOLDER')
+    login_face_folder = environ.get('LOGIN_FACE_FOLDER')
+    login_fingerprint_folder = environ.get('LOGIN_FINGERPRINT_FOLDER')
     temp_dir = environ.get('TEMP_DIR')
     makedirs('logs', exist_ok=True)
     makedirs(images_folder, exist_ok=True)
     makedirs(videos_folder, exist_ok=True)
+    makedirs(login_face_folder, exist_ok=True)
+    makedirs(login_fingerprint_folder, exist_ok=True)
     makedirs(temp_dir, exist_ok=True)
 
     # Create Mongodb database
