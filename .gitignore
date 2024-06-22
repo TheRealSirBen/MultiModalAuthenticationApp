@@ -12,4 +12,5 @@ temp/
 .env_dev
 config.toml
 .devcontainer/
+.yoloface/
 
