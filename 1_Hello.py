@@ -27,7 +27,7 @@ with col2:
                 - Programme: MSC In Cybersecurity
 
                 ### Topic
-                A mutative multimodal biometric authentication model to enhance data 
+                A mutative multimodal biometric authentication models to enhance data 
                 security in online customer banking systems.
             """
     )

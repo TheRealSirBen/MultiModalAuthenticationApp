@@ -213,7 +213,7 @@ if session_state.get('navigation_id') == 1:
 
             # When number of collected images is less than required
             if session_state.get('face_image') < sufficient_face_images_num:
-                # Loading the face detection model
+                # Loading the face detection models
                 _, box, conf = face.face_detection(frame_arr=edited_frame, frame_status=True, model='tiny')
                 edited_frame = face.show_output(edited_frame, box, frame_status=True)
                 frame_holder.image(edited_frame)

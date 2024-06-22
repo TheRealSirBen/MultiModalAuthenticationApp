@@ -1,41 +1,36 @@
-import streamlit as st
-from streamlit import session_state
-
-from cv2 import VideoCapture
-from cv2 import flip
-from cv2 import cvtColor
-from cv2 import COLOR_BGR2RGB
-
-from bson.objectid import ObjectId
-from PIL import Image
-import csv
 import copy
+import csv
 import time
-import mediapipe as mp
 from os import environ
-from yoloface import face_analysis
+
+import mediapipe as mp
+import streamlit as st
+from PIL import Image
+from bson.objectid import ObjectId
+from cv2 import COLOR_BGR2RGB
+from cv2 import VideoCapture
+from cv2 import cvtColor
+from cv2 import flip
 from numpy import mean
-from logging import info
+from streamlit import session_state
+from yoloface import face_analysis
 
-from models.liveness import KeyPointClassifier
-
-from helper import save_user_file, get_finger_index
-from helper import convert_and_resize
-from helper import pick_random_item
+from database import delete_records
+from database import get_records
+from database import insert_record
+from datagrip import face_comparison_on_images, delete_image, fingerprint_recognition_on_images
+from helper import FINGER_COLLECTION
 from helper import calc_bounding_rect
 from helper import calc_landmark_list
-from helper import pre_process_landmark
-from helper import draw_landmarks
-from helper import draw_expectation
+from helper import convert_and_resize
 from helper import draw_bounding_rect
+from helper import draw_expectation
+from helper import draw_landmarks
+from helper import pick_random_item
+from helper import pre_process_landmark
 from helper import process_upload_fingerprint_file
-from helper import FINGER_COLLECTION
-
-from database import insert_record
-from database import get_records
-from database import delete_records
-
-from datagrip import face_comparison_on_images, delete_image, fingerprint_recognition_on_images
+from helper import save_user_file, get_finger_index
+from models.liveness import KeyPointClassifier
 
 st.set_page_config(
     page_title="Multi Modal Authentication Demo App",
@@ -292,7 +287,7 @@ if session_state.get('navigation_id') == 1:
         results = hands.process(debug_image)
         debug_image.flags.writeable = True
 
-        # Loading the face detection model
+        # Loading the face detection models
         _, box, conf = face.face_detection(frame_arr=debug_image, frame_status=True, model='tiny')
         debug_image = face.show_output(debug_image, box, frame_status=True)
 
@@ -377,7 +372,7 @@ if session_state.get('navigation_id') == 2:
     if reg_face_images_list and login_face_images_list:
 
         #
-        progress_text = "Running Facial Recognition model. Please wait."
+        progress_text = "Running Facial Recognition models. Please wait."
         facial_recognition_progress_bar = st.progress(0, text=progress_text)
 
         # Iterate over source images

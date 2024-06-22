@@ -1,0 +1,1 @@
+from models.liveness.keypoint_classifier.keypoint_classifier import KeyPointClassifier
