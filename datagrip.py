@@ -46,6 +46,16 @@ def upload_file_to_aws_s3(file_path, file_name, overwrite):
         return False
 
 
+def delete_image(file_name: str):
+    url = '{}/delete-file/{}?file_name={}&region_name={}&app_name={}'.format(
+        AWS_STORAGE_ENDPOINT, AWS_BUCKET_NAME, file_name, AWS_REGION_NAME, AWS_BUCKET_NAME
+    )
+    data = delete(url)
+    status, response = data.status_code, loads(data.text)
+
+    return status, response
+
+
 def download_file_from_aws_s3(file_id: str, file_path: str):
     url = '{}/download/{}/{}?region_name={}&app_name={}'.format(
         AWS_STORAGE_ENDPOINT, AWS_BUCKET_NAME, file_id, AWS_REGION_NAME, AWS_BUCKET_NAME
@@ -71,16 +81,6 @@ def detect_face_on_image(image_id: str):
     }
     url = '{}/face-detection-aws-storage'.format(AWS_REKOGNITION_ENDPOINT)
     data = post(url, json=data)
-    status, response = data.status_code, loads(data.text)
-
-    return status, response
-
-
-def delete_image(file_name: str):
-    url = '{}/delete-file/{}?file_name={}&region_name={}&app_name={}'.format(
-        AWS_STORAGE_ENDPOINT, AWS_BUCKET_NAME, file_name, AWS_REGION_NAME, AWS_BUCKET_NAME
-    )
-    data = delete(url)
     status, response = data.status_code, loads(data.text)
 
     return status, response

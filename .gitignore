@@ -14,3 +14,7 @@ config.toml
 .devcontainer/
 .yoloface/
 
+/login_face/
+/login_fingerprint/
+/face_upload_images/
+fingerprint_upload_images/
