@@ -26,5 +26,3 @@ with col2:
                 security in online customer banking systems.
             """
     )
-
-st.write('### :blue[Project Description and How to navigate the App]')
