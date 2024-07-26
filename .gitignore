@@ -9,7 +9,6 @@ logs/
 temp/
 .idea/
 **/__pycache__/
-.env_dev
 config.toml
 .devcontainer/
 .yoloface/
